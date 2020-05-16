@@ -1,5 +1,6 @@
 .home-page {
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
 }
@@ -10,14 +11,38 @@
   align-items: flex-end;
 }
 
+.match-history {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end; 
+}
+
 .select-option {
+  display: flex;
+  flex-direction: row;
+}
+
+.select-option > div {
   width: 150px;
+  margin-right: 12px;
+}
+
+.select-option > div:last-child {
+  margin-right: 0px;
 }
 
 .vis-tooltip {
+  display: block;
   padding: 4px 8px 4px 8px;
   color: white;
   background: black;
   border-radius: 8px;
   word-break: keep-all;
+}
+
+.team-color-div {
+  display: inline-block;
+  height: 10px; 
+  width: 10px;
+  margin-left: 4px;
 }

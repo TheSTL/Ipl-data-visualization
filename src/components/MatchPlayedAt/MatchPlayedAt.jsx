@@ -3,9 +3,8 @@ import { Treemap } from 'react-vis';
 import { Tooltip, Select } from "@chakra-ui/core";
 import { colorPalette1 } from '../../constants';
 
-function _getRandomData(data) {
+function _getFormatData(data) {
     if (!data) return;
-    console.log(data);
     
     const leaves = [];
     Object.keys(data).forEach((key, index) => { 
@@ -26,14 +25,14 @@ function _getRandomData(data) {
     };
   }
 
-class MatchPlayed extends React.Component {
+class MatchPlayedAt extends React.Component {
     constructor(props) {
         super(props);
         this.state= {
             matchPerVenue: props.matchPerVenue,
             matchPerCity: props.matchPerCity,
             matchPerCountry: props.matchPerCountry,
-            treemapData: _getRandomData(props.matchPerVenue),
+            treemapData: _getFormatData(props.matchPerVenue),
             hoveredNode: false,
             useCirclePacking: true,
         };
@@ -45,7 +44,7 @@ class MatchPlayed extends React.Component {
                 matchPerVenue: nextProps.matchPerVenue,
                 matchPerCity: nextProps.matchPerCity,
                 matchPerCountry: nextProps.matchPerCountry,
-                treemapData: _getRandomData(nextProps.matchPerVenue),
+                treemapData: _getFormatData(nextProps.matchPerVenue),
             }
         }
     }
@@ -55,7 +54,7 @@ class MatchPlayed extends React.Component {
 
         if (!value) return;
         this.setState(prevState => ({
-            treemapData: _getRandomData(prevState[value])
+            treemapData: _getFormatData(prevState[value])
         }));
     }
 
@@ -97,4 +96,4 @@ class MatchPlayed extends React.Component {
     }
 }
 
-export default MatchPlayed;
+export default MatchPlayedAt;
