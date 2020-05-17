@@ -20,6 +20,7 @@
 .select-option {
   display: flex;
   flex-direction: row;
+  margin-bottom: 8px;
 }
 
 .select-option > div {
@@ -67,7 +68,6 @@
   font-weight: bold;
 }
 
-
 .score-history .team-end-result .team-score {
   font-size: 36px;
 }
@@ -83,4 +83,77 @@
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.scroll-container-wrapper {
+  display: flex;
+  align-items: center;
+}
+
+.scroll-container {
+  margin: 0 4px;
+  width: 100%;
+}
+
+.ball-history {
+  display: flex;
+  padding: 10px 0;
+  background-color: #0e1533;
+  border-radius: 12px;
+}
+
+.ball-box {
+  font-family: Source Sans Pro, sans-serif;
+  font-weight: bold;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 30px;
+  border-radius: 40px;
+  flex-basis: 30px;
+  flex-grow: 0;
+  flex-shrink: 0;
+  margin: 0 2px;
+}
+
+.ball-box.over {
+  color: white;
+  font-size: 12px;
+  flex-basis: 52px;
+}
+
+.ball-box.run {
+  background: white;
+}
+
+.ball-box.run.six {
+  background: #4361ee;
+  color: white;
+}
+
+.ball-box.run.four {
+  background: #00b4d8;
+  color: white;
+}
+
+.ball-box.wicket {
+  background: #cf0a2c;
+  color: #fff;
+}
+
+.ball-box.dot {
+  background: white;
+}
+
+.ball-box.dot > span {
+  height: inherit;
+  font-weight: bolder;
+}
+
+.flex-col-flex-end {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-end;
+  
 }

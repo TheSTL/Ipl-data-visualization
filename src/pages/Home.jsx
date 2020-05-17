@@ -24,8 +24,6 @@ class Home extends React.Component {
 
     const matchDataExtracted = getDataFromMatchJson(MatchData);
     const ballDataExtracted = getDataFromBallJson(BallData);
-    console.log(matchDataExtracted);
-    console.log(ballDataExtracted);
 
     this.setState({
       ...matchDataExtracted,

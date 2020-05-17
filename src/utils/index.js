@@ -1,6 +1,4 @@
 export const getDataFromMatchJson = (matchData) => {
-  console.log(matchData[0]);
-  console.log(matchData.length);
   const matchPerVenue = {};
   const matchPerCity = {};
   const matchPerCountry = {};
@@ -29,7 +27,7 @@ export const getDataFromMatchJson = (matchData) => {
       matchDate: match.Match_Date,
       winType: match.Win_Type,
       wonBy: match.Won_By,
-      season: match.Season_Id
+      season: match.Season_Id,
     };
   });
   return {
@@ -41,8 +39,6 @@ export const getDataFromMatchJson = (matchData) => {
 };
 
 export const getDataFromBallJson = (ballData) => {
-  console.log(ballData[0]);
-  console.log(ballData.length);
   const matchDetails = {};
   ballData.forEach((ball) => {
     if (!Object.prototype.hasOwnProperty.call(matchDetails, ball.Match_Id)) {

@@ -11,6 +11,7 @@ import {
   VerticalBarSeries,
 } from "react-vis";
 import { STRINGS, Inning1Color, Inning2Color } from "../../constants";
+import ScrollElement from "../ScrollElement/ScrollElement";
 
 class Example extends React.Component {
   constructor(props) {
@@ -30,7 +31,9 @@ class Example extends React.Component {
       currentShowInningOver: [],
       currentShowInningWicket: [],
       currentColor: Inning1Color,
+      currentInning: 1,
     };
+    this.scrollElement = React.createRef();
   }
 
   componentDidUpdate(prevProps) {
@@ -207,7 +210,6 @@ class Example extends React.Component {
             data={dataToShowInningWicket2}
           />
         </XYPlot>
-        <div className="ball-history"></div>
       </div>
     );
   };
@@ -250,6 +252,79 @@ class Example extends React.Component {
     );
   };
 
+  renderBallToBallHistory = () => {
+    const { matchDetails, selectedMatchId, currentInning } = this.state;
+    const matchData = matchDetails[selectedMatchId];
+    const { visWidth } = this.props;
+    const overEnded = [];
+
+    return (
+      <div>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            marginBottom: "8px",
+          }}
+        >
+          <span style={{ fontFamily: 'monospace', fontSize: '20px' }}> Team {currentInning} </span>
+          <Button size="xs" variantColor="green" variant="outline" onClick={this.onChangeCurrentInning}>
+            Change team
+          </Button>
+        </div>
+        <ScrollElement
+          scrollStyle={{ width: visWidth }}
+          kClass="scroll-container ball-history"
+        >
+          {matchData &&
+            matchData[currentInning].ballHistory.map((ball, index) => {
+              let className = "ball-box";
+              let content = "";
+              if (ball.run) {
+                className += " run";
+                content = String(ball.run);
+                if (ball.run === 4 || ball.run === 6) {
+                  className += ` ${ball.run === 4 ? "four" : "six"}`;
+                }
+              }
+              if (ball.wicket) {
+                className += " wicket";
+                content += " W";
+              }
+              if (!ball.wicket && !ball.run) {
+                className += " dot";
+                content = ".";
+              }
+
+              if (overEnded.indexOf(ball.over) === -1) {
+                overEnded.push(ball.over);
+                return (
+                  <React.Fragment>
+                    <li className="ball-box over">Over {ball.over}</li>
+                    <li className={className}>
+                      <span>{content}</span>
+                    </li>
+                  </React.Fragment>
+                );
+              }
+
+              return (
+                <li className={className}>
+                  <span>{content}</span>
+                </li>
+              );
+            })}
+        </ScrollElement>
+      </div>
+    );
+  };
+
+  onChangeCurrentInning = () => {
+      this.setState((prevState) => ({
+          currentInning: prevState.currentInning === 1 ? 2 : 1,
+      }));
+  }
+
   onToggleInningInOverHistory = () => {
     const {
       currentShowInningOver,
@@ -272,7 +347,7 @@ class Example extends React.Component {
       });
     }
   };
-
+  
   onChangeMatch = (e) => {
     const { matchDetails } = this.state;
     const matchId = e.target.value;
@@ -373,6 +448,7 @@ class Example extends React.Component {
             ))}
           </Select>
         </div>
+        {this.renderBallToBallHistory()}
         {matchDetail && teamWonMatch ? (
           <React.Fragment>
             <div className="score-history">
