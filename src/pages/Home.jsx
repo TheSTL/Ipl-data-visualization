@@ -11,6 +11,7 @@ class Home extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      isLoading: true,
       matchPerVenue: {},
       matchPerCity: {},
       matchPerCountry: {},
@@ -29,6 +30,7 @@ class Home extends React.Component {
     this.setState({
       ...matchDataExtracted,
       ...ballDataExtracted,
+      isLoading: false,
     });
   }
   componentWillMount() {
@@ -62,7 +64,17 @@ class Home extends React.Component {
       matchDetails,
       visHeight,
       visWidth,
+      isLoading,
     } = this.state;
+
+    if (isLoading) {
+      return (
+        <div className="loading-screen">
+          <h1>Loading please wait... </h1>
+        <img  src='/loading.gif' alt=""/>
+        </div>
+      )
+    }
 
     return (
       <div className="home-page">

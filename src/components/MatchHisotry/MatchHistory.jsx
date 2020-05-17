@@ -36,6 +36,14 @@ class Example extends React.Component {
     this.scrollElement = React.createRef();
   }
 
+  componentDidMount() {
+    const { matchIds, matchDetails } = this.state;
+    this.showMatchHistory(matchIds[0], matchDetails);
+    this.setState({
+      selectedMatchId: matchIds[0],
+    });
+  }
+
   componentDidUpdate(prevProps) {
     const { selectedMatchId } = this.state;
     if (
@@ -267,8 +275,16 @@ class Example extends React.Component {
             marginBottom: "8px",
           }}
         >
-          <span style={{ fontFamily: 'monospace', fontSize: '20px' }}> Team {currentInning} </span>
-          <Button size="xs" variantColor="green" variant="outline" onClick={this.onChangeCurrentInning}>
+          <span style={{ fontFamily: "monospace", fontSize: "20px" }}>
+            {" "}
+            Team {currentInning}{" "}
+          </span>
+          <Button
+            size="xs"
+            variantColor="green"
+            variant="outline"
+            onClick={this.onChangeCurrentInning}
+          >
             Change team
           </Button>
         </div>
@@ -320,10 +336,10 @@ class Example extends React.Component {
   };
 
   onChangeCurrentInning = () => {
-      this.setState((prevState) => ({
-          currentInning: prevState.currentInning === 1 ? 2 : 1,
-      }));
-  }
+    this.setState((prevState) => ({
+      currentInning: prevState.currentInning === 1 ? 2 : 1,
+    }));
+  };
 
   onToggleInningInOverHistory = () => {
     const {
@@ -347,7 +363,7 @@ class Example extends React.Component {
       });
     }
   };
-  
+
   onChangeMatch = (e) => {
     const { matchDetails } = this.state;
     const matchId = e.target.value;
@@ -383,10 +399,10 @@ class Example extends React.Component {
         (id) => matchExtraDetails[id].season === Number(value)
       );
     }
-
+    this.showMatchHistory(newMatchIds[0], matchDetails);
     this.setState({
       matchIds: newMatchIds,
-      selectedMatchId: newMatchIds[0]
+      selectedMatchId: newMatchIds[0],
     });
   };
 
@@ -423,86 +439,88 @@ class Example extends React.Component {
     return (
       <div className="flex-col-center match-history-wrapper">
         <h2 className="tab-heading">
-          Visualization for matche details played in all 9 season. You can visualize ball to ball details, over details and match run / wicket history.
+          Visualization for matche details played in all 9 season. You can
+          visualize ball to ball details, over details and match run / wicket
+          history.
         </h2>
-      <div className="match-history">
-        <div className="select-option">
-          <Select
-            placeholder="Select history type"
-            value={selectedHistoryType}
-            onChange={this.onChangeHistoryType}
-          >
-            <option value={STRINGS.MATCH_HISTORY}>Match History</option>
-            <option value={STRINGS.OVER_HISOTRY}>Over History</option>
-          </Select>
-          <Select
-            placeholder="Select match"
-            value={selectedMatchId}
-            onChange={this.onChangeMatch}
-          >
-            {matchIds.map((id) => (
-              <option key={id} value={id}>
-                {matchExtraDetails[id].matchDate}
-              </option>
-            ))}
-          </Select>
-          <Select placeholder="Select season" onChange={this.onChangeSeason}>
-            <option value="all">All season</option>
-            {Array.from({ length: 9 }).map((_, index) => (
-              <option value={index + 1}>{`Season ${index + 1}`}</option>
-            ))}
-          </Select>
-        </div>
-        {this.renderBallToBallHistory()}
-        {matchDetail && teamWonMatch ? (
-          <React.Fragment>
-            <div className="score-history">
-              {Object.keys(matchData).map((id) => (
-                <div
-                  className={`team-end-result ${
-                    Number(id) === teamWonMatch && "team-won"
-                  }`}
-                >
-                  <h4>{`Team ${id}`}</h4>
-                  <div className="team-score">{`${matchData[id].totalScore}/${matchData[id].totalWicketFallen}`}</div>
-                </div>
+        <div className="match-history">
+          <div className="select-option">
+            <Select
+              placeholder="Select history type"
+              value={selectedHistoryType}
+              onChange={this.onChangeHistoryType}
+            >
+              <option value={STRINGS.MATCH_HISTORY}>Match History</option>
+              <option value={STRINGS.OVER_HISOTRY}>Over History</option>
+            </Select>
+            <Select
+              placeholder="Select match"
+              value={selectedMatchId}
+              onChange={this.onChangeMatch}
+            >
+              {matchIds.map((id) => (
+                <option key={id} value={id}>
+                  {matchExtraDetails[id].matchDate}
+                </option>
               ))}
-            </div>
-            <span className="info">
-              {`won by : 
+            </Select>
+            <Select placeholder="Select season" onChange={this.onChangeSeason}>
+              <option value="all">All season</option>
+              {Array.from({ length: 9 }).map((_, index) => (
+                <option value={index + 1}>{`Season ${index + 1}`}</option>
+              ))}
+            </Select>
+          </div>
+          {this.renderBallToBallHistory()}
+          {matchDetail && teamWonMatch ? (
+            <React.Fragment>
+              <div className="score-history">
+                {Object.keys(matchData).map((id) => (
+                  <div
+                    className={`team-end-result ${
+                      Number(id) === teamWonMatch && "team-won"
+                    }`}
+                  >
+                    <h4>{`Team ${id}`}</h4>
+                    <div className="team-score">{`${matchData[id].totalScore}/${matchData[id].totalWicketFallen}`}</div>
+                  </div>
+                ))}
+              </div>
+              <span className="info">
+                {`won by : 
               ${matchDetail.wonBy} ${
-                matchDetail.winType === "by runs" ? "runs" : "wickets"
-              }`}
+                  matchDetail.winType === "by runs" ? "runs" : "wickets"
+                }`}
+              </span>
+            </React.Fragment>
+          ) : (
+            <span className="info">Match tied</span>
+          )}
+          <div style={{ width: "100%", marginBottom: "8px" }}>
+            <span style={{ marginRight: "8px" }}>
+              Team1 :
+              <span
+                className="team-color-div "
+                style={{ background: Inning1Color }}
+              ></span>
             </span>
-          </React.Fragment>
-        ) : (
-          <span className="info">Match tied</span>
-        )}
-        <div style={{ width: "100%", marginBottom: "8px" }}>
-          <span style={{ marginRight: "8px" }}>
-            Team1 :
-            <span
-              className="team-color-div "
-              style={{ background: Inning1Color }}
-            ></span>
-          </span>
-          <span style={{ marginRight: "8px" }}>
-            Team2 :
-            <span
-              className="team-color-div "
-              style={{ background: Inning2Color }}
-            ></span>
-          </span>
-          <span>
-            Wicket :
-            <span
-              className="team-color-div"
-              style={{ background: 'red', borderRadius: '100%' }}
-            ></span>
-          </span>
+            <span style={{ marginRight: "8px" }}>
+              Team2 :
+              <span
+                className="team-color-div "
+                style={{ background: Inning2Color }}
+              ></span>
+            </span>
+            <span>
+              Wicket :
+              <span
+                className="team-color-div"
+                style={{ background: "red", borderRadius: "100%" }}
+              ></span>
+            </span>
+          </div>
+          {renderGaph}
         </div>
-        {renderGaph}
-      </div>
       </div>
     );
   }

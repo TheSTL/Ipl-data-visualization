@@ -162,3 +162,22 @@
   justify-content: center;
   align-items: center;
 }
+
+.loading-screen {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.loading-screen h1 {
+  color: #1c2541;
+}
+.loading-screen img {
+  height: 200px;
+  width: 300px;
+  border-radius: 100%;
+}
