@@ -439,7 +439,7 @@ class Example extends React.Component {
     return (
       <div className="flex-col-center match-history-wrapper">
         <h2 className="tab-heading">
-          Visualization for matche details played in all 9 season. You can
+          Visualization for match details played in all 9 season. You can
           visualize ball to ball details, over details and match run / wicket
           history.
         </h2>
