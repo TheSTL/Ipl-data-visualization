@@ -29,6 +29,7 @@ export const getDataFromMatchJson = (matchData) => {
       matchDate: match.Match_Date,
       winType: match.Win_Type,
       wonBy: match.Won_By,
+      season: match.Season_Id
     };
   });
   return {

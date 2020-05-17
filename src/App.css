@@ -14,7 +14,7 @@
 .match-history {
   display: flex;
   flex-direction: column;
-  align-items: flex-end; 
+  align-items: center;
 }
 
 .select-option {
@@ -42,7 +42,39 @@
 
 .team-color-div {
   display: inline-block;
-  height: 10px; 
+  height: 10px;
   width: 10px;
   margin-left: 4px;
+}
+
+.score-history {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  margin-bottom: 8px;
+}
+
+.score-history .team-end-result {
+  margin: 0 12px 0 12px;
+  text-align: center;
+  opacity: 0.5;
+  color: red;
+  text-shadow: 1px 1px black;
+}
+
+.score-history .team-end-result.team-won {
+  opacity: 1;
+  color: #affc41;
+  font-weight: bold;
+}
+
+
+.score-history .team-end-result .team-score {
+  font-size: 36px;
+}
+
+.info {
+  color: #25921c;
+  font-size: 18px;
+  text-decoration: underline;
 }

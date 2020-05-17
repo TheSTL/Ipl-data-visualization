@@ -164,47 +164,50 @@ class Example extends React.Component {
     } = this.state;
 
     return (
-      <XYPlot width={500} height={500}>
-        <HorizontalGridLines style={{ stroke: "#B7E9ED" }} />
-        <VerticalGridLines style={{ stroke: "#B7E9ED" }} />
-        <XAxis
-          title="Over"
-          style={{
-            line: { stroke: "#ADDDE1" },
-            ticks: { stroke: "#ADDDE1" },
-            text: { stroke: "none", fill: "#6b6b76", fontWeight: 600 },
-          }}
-        />
-        <YAxis title="Total Score" />
-        <LineSeries
-          color={Inning1Color}
-          data={dataToShowInningScore1}
-          style={{
-            strokeLinejoin: "round",
-            strokeWidth: 4,
-          }}
-        />
-        <LineSeries
-          color={Inning2Color}
-          data={dataToShowInningScore2}
-          style={{
-            strokeLinejoin: "round",
-            strokeWidth: 4,
-          }}
-        />
-        <MarkSeries
-          strokeWidth={2}
-          opacity="0.8"
-          color="red"
-          data={dataToShowInningWicket1}
-        />
-        <MarkSeries
-          strokeWidth={2}
-          color="red"
-          opacity="0.8"
-          data={dataToShowInningWicket2}
-        />
-      </XYPlot>
+      <div className="match-history-graph">
+        <XYPlot width={500} height={500}>
+          <HorizontalGridLines style={{ stroke: "#B7E9ED" }} />
+          <VerticalGridLines style={{ stroke: "#B7E9ED" }} />
+          <XAxis
+            title="Over"
+            style={{
+              line: { stroke: "#ADDDE1" },
+              ticks: { stroke: "#ADDDE1" },
+              text: { stroke: "none", fill: "#6b6b76", fontWeight: 600 },
+            }}
+          />
+          <YAxis title="Total Score" />
+          <LineSeries
+            color={Inning1Color}
+            data={dataToShowInningScore1}
+            style={{
+              strokeLinejoin: "round",
+              strokeWidth: 4,
+            }}
+          />
+          <LineSeries
+            color={Inning2Color}
+            data={dataToShowInningScore2}
+            style={{
+              strokeLinejoin: "round",
+              strokeWidth: 4,
+            }}
+          />
+          <MarkSeries
+            strokeWidth={2}
+            opacity="0.8"
+            color="red"
+            data={dataToShowInningWicket1}
+          />
+          <MarkSeries
+            strokeWidth={2}
+            color="red"
+            opacity="0.8"
+            data={dataToShowInningWicket2}
+          />
+        </XYPlot>
+        <div className="ball-history"></div>
+      </div>
     );
   };
 
@@ -292,6 +295,23 @@ class Example extends React.Component {
     });
   };
 
+  onChangeSeason = (e) => {
+    const { matchDetails, matchExtraDetails } = this.state;
+    const value = e.target.value;
+    let newMatchIds = [];
+    if (value === "all") {        
+      newMatchIds = Object.keys(matchDetails);
+    } else {
+      newMatchIds = Object.keys(matchDetails).filter(
+        (id) => matchExtraDetails[id].season === Number(value)
+      );
+    }
+    
+    this.setState({
+      matchIds: newMatchIds,
+    });
+  };
+
   render() {
     const {
       matchIds,
@@ -301,20 +321,13 @@ class Example extends React.Component {
       matchExtraDetails,
     } = this.state;
     const matchDetail = matchExtraDetails[selectedMatchId];
+    const matchData = matchDetails[selectedMatchId];
     let teamWonMatch = 0;
     let renderGaph = null;
 
-    if (
-      matchDetails[selectedMatchId] &&
-      matchDetails[selectedMatchId][1].totalScore >
-        matchDetails[selectedMatchId][2].totalScore
-    ) {
+    if (matchData && matchData[1].totalScore > matchData[2].totalScore) {
       teamWonMatch = 1;
-    } else if (
-      matchDetails[selectedMatchId] &&
-      matchDetails[selectedMatchId][1].totalScore <
-        matchDetails[selectedMatchId][2].totalScore
-    ) {
+    } else if (matchData && matchData[1].totalScore < matchData[2].totalScore) {
       teamWonMatch = 2;
     }
 
@@ -351,15 +364,38 @@ class Example extends React.Component {
               </option>
             ))}
           </Select>
+          <Select placeholder="Select season" onChange={this.onChangeSeason}>
+            <option value="all">All season</option>
+            {Array.from({ length: 9 }).map((_, index) => (
+              <option value={index + 1}>{`Season ${index + 1}`}</option>
+            ))}
+          </Select>
         </div>
-        {matchDetail && (
-          <h3 style={{ color: "#96e072" }}>
-            {teamWonMatch === 0
-              ? "Match tied"
-              : `Team ${teamWonMatch} won by: ${matchDetail.wonBy} ${matchDetail.winType} `}
-          </h3>
+        {matchDetail && teamWonMatch ? (
+          <React.Fragment>
+            <div className="score-history">
+              {Object.keys(matchData).map((id) => (
+                <div
+                  className={`team-end-result ${
+                    Number(id) === teamWonMatch && "team-won"
+                  }`}
+                >
+                  <h4>{`Team ${id}`}</h4>
+                  <div className="team-score">{`${matchData[id].totalScore}/${matchData[id].totalWicketFallen}`}</div>
+                </div>
+              ))}
+            </div>
+            <span className="info">
+              {`won by : 
+              ${matchDetail.wonBy} ${
+                matchDetail.winType === "by runs" ? "runs" : "wickets"
+              }`}
+            </span>
+          </React.Fragment>
+        ) : (
+          <span className="info">Match tied</span>
         )}
-        <div>
+        <div style={{ width: "100%", marginBottom: "8px" }}>
           <span style={{ marginRight: "8px" }}>
             Team1 :
             <span
@@ -375,7 +411,7 @@ class Example extends React.Component {
             ></span>
           </span>
         </div>
-        <div className="match-history-graph">{renderGaph}</div>
+        {renderGaph}
       </div>
     );
   }
