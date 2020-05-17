@@ -1,5 +1,6 @@
 import React from "react";
 import "../../node_modules/react-vis/dist/style.css";
+import { Tabs, TabList, TabPanels, Tab, TabPanel } from "@chakra-ui/core";
 import MatchData from "../data/match.json";
 import BallData from "../data/ball.json";
 import MatchPlayedAt from "../components/MatchPlayedAt/MatchPlayedAt";
@@ -15,7 +16,7 @@ class Home extends React.Component {
       matchPerCountry: {},
       matchExtraDetails: {},
       matchDetails: {},
-      ...(this.getNewSizeOfVis(window.innerWidth, window.innerHeight))
+      ...this.getNewSizeOfVis(window.innerWidth, window.innerHeight),
     };
   }
 
@@ -34,9 +35,9 @@ class Home extends React.Component {
     window.removeEventListener("resize", this.updateSize);
   }
 
-  updateSize = () => { 
+  updateSize = () => {
     this.setState({
-      ...(this.getNewSizeOfVis(window.innerWidth, window.innerHeight))
+      ...this.getNewSizeOfVis(window.innerWidth, window.innerHeight),
     });
   };
 
@@ -49,7 +50,7 @@ class Home extends React.Component {
     return {
       visWidth,
       visHeight,
-    }
+    };
   };
 
   render() {
@@ -65,19 +66,34 @@ class Home extends React.Component {
 
     return (
       <div className="home-page">
-        <MatchHisotry
-          matchDetails={matchDetails}
-          matchExtraDetails={matchExtraDetails}
-          visWidth={visWidth}
-          visHeight={visHeight}
-        />
-        <MatchPlayedAt
-          matchPerVenue={matchPerVenue}
-          matchPerCity={matchPerCity}
-          matchPerCountry={matchPerCountry}
-          visWidth={visWidth}
-          visHeight={visHeight}
-        />
+        <h1>IPL Visualization</h1>
+        <Tabs isFitted variant="enclosed" style={{ width: "100%" }}>
+          <TabList mb="1em">
+            <Tab _selected={{ color: "white", bg: "blue.500" }}>Matches</Tab>
+            <Tab _selected={{ color: "white", bg: "green.500" }}>
+              Matches Played at different location
+            </Tab>
+          </TabList>
+          <TabPanels>
+            <TabPanel>
+              <MatchHisotry
+                matchDetails={matchDetails}
+                matchExtraDetails={matchExtraDetails}
+                visWidth={visWidth}
+                visHeight={visHeight}
+              />
+            </TabPanel>
+            <TabPanel>
+              <MatchPlayedAt
+                matchPerVenue={matchPerVenue}
+                matchPerCity={matchPerCity}
+                matchPerCountry={matchPerCountry}
+                visWidth={visWidth}
+                visHeight={visHeight}
+              />
+            </TabPanel>
+          </TabPanels>
+        </Tabs>
       </div>
     );
   }

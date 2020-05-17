@@ -76,6 +76,12 @@
   color: #25921c;
   font-size: 18px;
   text-decoration: underline;
+  margin-bottom: 8px;
+}
+
+.tab-heading {
+  font-family: monospace;
+  margin: 0 2em 12px 2em;
 }
 
 .match-player-vis {
@@ -150,10 +156,9 @@
   font-weight: bolder;
 }
 
-.flex-col-flex-end {
+.flex-col-center {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: flex-end;
-  
+  align-items: center;
 }

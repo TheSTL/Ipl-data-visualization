@@ -386,6 +386,7 @@ class Example extends React.Component {
 
     this.setState({
       matchIds: newMatchIds,
+      selectedMatchId: newMatchIds[0]
     });
   };
 
@@ -420,6 +421,10 @@ class Example extends React.Component {
     }
 
     return (
+      <div className="flex-col-center match-history-wrapper">
+        <h2 className="tab-heading">
+          Visualization for matche details played in all 9 season. You can visualize ball to ball details, over details and match run / wicket history.
+        </h2>
       <div className="match-history">
         <div className="select-option">
           <Select
@@ -481,15 +486,23 @@ class Example extends React.Component {
               style={{ background: Inning1Color }}
             ></span>
           </span>
-          <span>
+          <span style={{ marginRight: "8px" }}>
             Team2 :
             <span
               className="team-color-div "
               style={{ background: Inning2Color }}
             ></span>
           </span>
+          <span>
+            Wicket :
+            <span
+              className="team-color-div"
+              style={{ background: 'red', borderRadius: '100%' }}
+            ></span>
+          </span>
         </div>
         {renderGaph}
+      </div>
       </div>
     );
   }
