@@ -162,10 +162,11 @@ class Example extends React.Component {
       dataToShowInningWicket1,
       dataToShowInningWicket2,
     } = this.state;
+    const { visWidth, visHeight } = this.props;
 
     return (
       <div className="match-history-graph">
-        <XYPlot width={500} height={500}>
+        <XYPlot width={visWidth} height={visHeight}>
           <HorizontalGridLines style={{ stroke: "#B7E9ED" }} />
           <VerticalGridLines style={{ stroke: "#B7E9ED" }} />
           <XAxis
@@ -217,6 +218,7 @@ class Example extends React.Component {
       currentShowInningOver,
       currentColor,
     } = this.state;
+    const { visWidth, visHeight } = this.props;
 
     return (
       <div className="over-history">
@@ -228,7 +230,7 @@ class Example extends React.Component {
         >
           Change Inning
         </Button>
-        <XYPlot width={500} height={500} stackBy="y">
+        <XYPlot width={visWidth} height={visHeight} stackBy="y">
           <VerticalGridLines />
           <HorizontalGridLines />
           <XAxis title="Over" />
@@ -299,14 +301,14 @@ class Example extends React.Component {
     const { matchDetails, matchExtraDetails } = this.state;
     const value = e.target.value;
     let newMatchIds = [];
-    if (value === "all") {        
+    if (value === "all") {
       newMatchIds = Object.keys(matchDetails);
     } else {
       newMatchIds = Object.keys(matchDetails).filter(
         (id) => matchExtraDetails[id].season === Number(value)
       );
     }
-    
+
     this.setState({
       matchIds: newMatchIds,
     });

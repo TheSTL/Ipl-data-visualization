@@ -15,14 +15,13 @@ class Home extends React.Component {
       matchPerCountry: {},
       matchExtraDetails: {},
       matchDetails: {},
-      isLoading: false,
+      ...(this.getNewSizeOfVis(window.innerWidth, window.innerHeight))
     };
   }
 
   componentDidMount() {
-    this.setState({
-      isLoading: true,
-    });
+    window.addEventListener("resize", this.updateSize);
+
     const matchDataExtracted = getDataFromMatchJson(MatchData);
     const ballDataExtracted = getDataFromBallJson(BallData);
     console.log(matchDataExtracted);
@@ -31,9 +30,29 @@ class Home extends React.Component {
     this.setState({
       ...matchDataExtracted,
       ...ballDataExtracted,
-      isLoading: false,
     });
   }
+  componentWillMount() {
+    window.removeEventListener("resize", this.updateSize);
+  }
+
+  updateSize = () => { 
+    this.setState({
+      ...(this.getNewSizeOfVis(window.innerWidth, window.innerHeight))
+    });
+  };
+
+  getNewSizeOfVis = (width, height) => {
+    let visHeight = height;
+    let visWidth = width;
+    if (height >= 550) visHeight = 500;
+    if (width >= 550) visWidth = 500;
+
+    return {
+      visWidth,
+      visHeight,
+    }
+  };
 
   render() {
     const {
@@ -42,21 +61,24 @@ class Home extends React.Component {
       matchPerCountry,
       matchExtraDetails,
       matchDetails,
-      isLoading,
+      visHeight,
+      visWidth,
     } = this.state;
-
-    if (isLoading) return null;
 
     return (
       <div className="home-page">
         <MatchHisotry
           matchDetails={matchDetails}
           matchExtraDetails={matchExtraDetails}
+          visWidth={visWidth}
+          visHeight={visHeight}
         />
         <MatchPlayedAt
           matchPerVenue={matchPerVenue}
           matchPerCity={matchPerCity}
           matchPerCountry={matchPerCountry}
+          visWidth={visWidth}
+          visHeight={visHeight}
         />
       </div>
     );

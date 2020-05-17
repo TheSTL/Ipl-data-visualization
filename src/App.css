@@ -23,7 +23,6 @@
 }
 
 .select-option > div {
-  width: 150px;
   margin-right: 12px;
 }
 
@@ -77,4 +76,11 @@
   color: #25921c;
   font-size: 18px;
   text-decoration: underline;
+}
+
+.match-player-vis {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }

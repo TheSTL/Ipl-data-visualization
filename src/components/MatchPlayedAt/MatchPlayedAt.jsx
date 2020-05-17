@@ -35,6 +35,7 @@ class MatchPlayedAt extends React.Component {
             treemapData: _getFormatData(props.matchPerVenue),
             hoveredNode: false,
             useCirclePacking: true,
+
         };
     }
 
@@ -59,13 +60,14 @@ class MatchPlayedAt extends React.Component {
     }
 
     render() {
-    const { hoveredNode } = this.state;    
+    const { hoveredNode } = this.state;
+    const { visWidth, visHeight } = this.props;
     const treeProps = {
       onLeafMouseOver: x => this.setState({hoveredNode: x}),
       onLeafMouseOut: () => this.setState({hoveredNode: false}),
       data: this.state.treemapData,
-      height: 600,
-      width: 600,
+      height: visHeight,
+      width: visWidth,
       padding: 4,
       mode: 'circlePack',
       getLabel: x => x.name,
@@ -80,7 +82,7 @@ class MatchPlayedAt extends React.Component {
                 <option value="matchPerCountry">Country</option>
             </Select>
         </div>
-        <div style={{position: 'relative'}} className="dynamic-treemap-example">
+        <div className="match-player-vis">
             <Treemap {...treeProps} /> 
             <div style={{
                 display: hoveredNode && hoveredNode.data.tooltip ? 'block' : 'none',
