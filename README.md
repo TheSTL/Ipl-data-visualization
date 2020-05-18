@@ -19,5 +19,6 @@ Then divided the converted json of Ball_by_Ball into small chunks so that they c
 
 ### Demo: 
 
+Live: [Ipl-Visualization](https://ipl-vis.netlify.app/)
 
 ![ipl](https://user-images.githubusercontent.com/50075905/82266945-b2a54900-9988-11ea-86cc-b176a7054ba4.gif)
