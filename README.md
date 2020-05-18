@@ -8,6 +8,15 @@
 1. Mobile responsive: With the help of react-vis it was very easy to make responsive by dynamically set width & height of react-vis component.
 2. Optimize loading: By dynamically importing json data parallelly.
 
+## Data
+
+Data here is used from [Kaggle](https://www.kaggle.com/harsha547/indian-premier-league-csv-dataset).
+1. Match.csv converted to json
+2. Ball_by_Ball.csv converted to json.
+
+Then divided the converted json of Ball_by_Ball into small chunks so that they can be imported directly and can increase the page load time.
+
+
 ### Demo: 
 
 
