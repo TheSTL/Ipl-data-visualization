@@ -5,6 +5,7 @@ import MatchData from "../data/match.json";
 import MatchPlayedAt from "../components/MatchPlayedAt/MatchPlayedAt";
 import MatchHisotry from "../components/MatchHisotry/MatchHistory";
 import { getDataFromMatchJson, getDataFromBallJson } from "../utils";
+import { CircularProgress, CircularProgressLabel } from "@chakra-ui/core";
 
 class Home extends React.Component {
   constructor(props) {
@@ -16,6 +17,7 @@ class Home extends React.Component {
       matchPerCountry: {},
       matchExtraDetails: {},
       matchDetails: {},
+      percentageFileGotDownloaded: 0,
       ...this.getNewSizeOfVis(window.innerWidth, window.innerHeight),
     };
   }
@@ -45,12 +47,11 @@ class Home extends React.Component {
           ({ default: ballData }) => {
             const ballDataExtracted = getDataFromBallJson(ballData);
             if ((index + 1) % 5 === 0) {
-              console.log("yes, update");
-
-              this.setState({
+              this.setState((prevState) => ({
                 ...ballDataExtracted,
+                percentageFileGotDownloaded: ((index + 1) * 100) / 20,
                 isLoading: false,
-              });
+              }));
             }
             return ballData;
           }
@@ -96,11 +97,23 @@ class Home extends React.Component {
       visHeight,
       visWidth,
       isLoading,
+      percentageFileGotDownloaded,
     } = this.state;
 
     return (
       <div className="home-page">
-        <h1>IPL Visualization</h1>
+        <h1 className="relative">
+          IPL Visualization
+          <CircularProgress
+            className="circular-bar"
+            value={percentageFileGotDownloaded}
+            color="green"
+          >
+            <CircularProgressLabel>
+              {percentageFileGotDownloaded}%
+            </CircularProgressLabel>
+          </CircularProgress>
+        </h1>
         <Tabs isFitted variant="enclosed" style={{ width: "100%" }}>
           <TabList mb="1em">
             <Tab _selected={{ color: "white", bg: "green.500" }}>

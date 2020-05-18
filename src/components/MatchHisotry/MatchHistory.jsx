@@ -45,19 +45,16 @@ class Example extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
-    const { selectedMatchId } = this.state;
     if (
       this.props.matchDetails !== prevProps.matchDetails ||
       this.props.matchExtraDetails !== prevProps.matchExtraDetails
     ) {
       const matchIds = Object.keys(this.props.matchDetails);
-      const defaultSelectedMatchId = matchIds[0];
       this.setState({
         matchDetails: this.props.matchDetails,
         matchExtraDetails: this.props.matchExtraDetails,
         matchIds,
       });
-      this.showMatchHistory(defaultSelectedMatchId, this.props.matchDetails);
     }
   }
 
@@ -67,6 +64,7 @@ class Example extends React.Component {
     if (!matchDetail) return;
     const firstInning = matchDetail[1];
     const secondInning = matchDetail[2];
+    
     const firstInningShowData = firstInning.matchHistory;
     const secondInningShowData = secondInning.matchHistory;
     const dataToShowInningScore1 = [];
@@ -363,9 +361,13 @@ class Example extends React.Component {
   };
 
   onChangeMatch = (e) => {
-    const { matchDetails } = this.state;
+    const { matchDetails, selectedHistoryType } = this.state;
     const matchId = e.target.value;
-    this.showMatchHistory(matchId, matchDetails);
+    if (selectedHistoryType === STRINGS.MATCH_HISTORY) {
+      this.showMatchHistory(matchId, matchDetails);
+    } else {
+      this.showOverHistory(matchId, matchDetails);
+    }
 
     this.setState({
       selectedMatchId: matchId,
@@ -387,7 +389,7 @@ class Example extends React.Component {
   };
 
   onChangeSeason = (e) => {
-    const { matchDetails, matchExtraDetails } = this.state;
+    const { matchDetails, matchExtraDetails, selectedHistoryType } = this.state;
     const value = e.target.value;
     let newMatchIds = [];
     if (value === "all") {
@@ -397,7 +399,11 @@ class Example extends React.Component {
         (id) => matchExtraDetails[id].season === Number(value)
       );
     }
-    this.showMatchHistory(newMatchIds[0], matchDetails);
+    if (selectedHistoryType === STRINGS.MATCH_HISTORY) {
+      this.showMatchHistory(newMatchIds[0], matchDetails);
+    } else {
+      this.showOverHistory(newMatchIds[0], matchDetails);
+    }
     this.setState({
       matchIds: newMatchIds,
       selectedMatchId: newMatchIds[0],
@@ -417,9 +423,19 @@ class Example extends React.Component {
     let teamWonMatch = 0;
     let renderGaph = null;
 
-    if (matchData && matchData[1].totalScore > matchData[2].totalScore) {
+    if (
+      matchData &&
+      matchData[1] &&
+      matchData[2] &&
+      matchData[1].totalScore > matchData[2].totalScore
+    ) {
       teamWonMatch = 1;
-    } else if (matchData && matchData[1].totalScore < matchData[2].totalScore) {
+    } else if (
+      matchData &&
+      matchData[1] &&
+      matchData[2] &&
+      matchData[1].totalScore < matchData[2].totalScore
+    ) {
       teamWonMatch = 2;
     }
 
@@ -439,7 +455,7 @@ class Example extends React.Component {
         <h2 className="tab-heading">
           Visualization for match details played in all 9 season. You can
           visualize ball to ball details, over details and match run / wicket
-          history.
+          history. Data is still getting fetched in background for all 9 season.
         </h2>
         <div className="match-history">
           <div className="select-option">
