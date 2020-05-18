@@ -40,15 +40,21 @@ class Home extends React.Component {
       this.setState({
         isLoading: true,
       });
+      Array.from({ length: 20 }).forEach((_, index) => {
+        import(`../data/ball${index + 1}.json`).then(
+          ({ default: ballData }) => {
+            const ballDataExtracted = getDataFromBallJson(ballData);
+            if ((index + 1) % 5 === 0) {
+              console.log("yes, update");
 
-      import("../data/ball.json").then(({ default: ballData }) => {
-        const ballDataExtracted = getDataFromBallJson(ballData);
-
-        this.setState({
-          ...ballDataExtracted,
-          isLoading: false,
-        });
-        return ballData;
+              this.setState({
+                ...ballDataExtracted,
+                isLoading: false,
+              });
+            }
+            return ballData;
+          }
+        );
       });
     }
   };

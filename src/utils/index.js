@@ -38,6 +38,8 @@ export const getDataFromMatchJson = (matchData) => {
   };
 };
 
+let allPrevBallData = {};
+
 export const getDataFromBallJson = (ballData) => {
   const matchDetails = {};
   ballData.forEach((ball) => {
@@ -105,8 +107,9 @@ export const getDataFromBallJson = (ballData) => {
       wicket: ball.Player_dissimal_Id ? true : false,
     });
   });
+  allPrevBallData = { ...allPrevBallData, ...matchDetails}
 
   return {
-    matchDetails,
+    matchDetails: allPrevBallData,
   };
 };

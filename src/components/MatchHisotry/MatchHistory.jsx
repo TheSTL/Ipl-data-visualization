@@ -56,8 +56,6 @@ class Example extends React.Component {
         matchDetails: this.props.matchDetails,
         matchExtraDetails: this.props.matchExtraDetails,
         matchIds,
-        selectedMatchId:
-          selectedMatchId === 0 ? defaultSelectedMatchId : selectedMatchId,
       });
       this.showMatchHistory(defaultSelectedMatchId, this.props.matchDetails);
     }
